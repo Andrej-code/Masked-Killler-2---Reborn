@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 namespace Masked_Killler_2___Reborn
 {
@@ -32,6 +33,7 @@ namespace Masked_Killler_2___Reborn
         Rectangle bloxyRect;
 
         Texture2D gasTexture;
+        List<Rectangle> gases;
         Rectangle gasRect;
 
         Texture2D gunTexture;
@@ -50,6 +52,10 @@ namespace Masked_Killler_2___Reborn
 
         KeyboardState KeyboardState;
 
+        Random generator;
+
+        
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,6 +68,8 @@ namespace Masked_Killler_2___Reborn
             // TODO: Add your initialization logic here
 
             // Other
+
+            generator = new Random();
 
             window = new Rectangle(0, 0, 800, 600);
 
@@ -77,7 +85,14 @@ namespace Masked_Killler_2___Reborn
 
             bloxyRect = new Rectangle(100, 100, 30, 40);
 
-            gasRect = new Rectangle(100, 150, 30, 40);
+            gases = new List<Rectangle>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                gases.Add(new Rectangle(generator.Next(0, window.Width - 5), generator.Next(0, window.Height - 5), 20, 30));
+            }
+
+            gasRect = new Rectangle(100, 350, 20, 30);
 
             gunRect = new Rectangle(100, 200, 30, 40);
 
@@ -137,13 +152,13 @@ namespace Masked_Killler_2___Reborn
 
             survivor.Draw(_spriteBatch);
 
-            _spriteBatch.Draw(bloxyTexture, bloxyRect, Color.White);
+            //_spriteBatch.Draw(bloxyTexture, bloxyRect, Color.White);
 
             _spriteBatch.Draw(gasTexture, gasRect, Color.White);
 
-            _spriteBatch.Draw(gunTexture, gunRect, Color.White);
+            //_spriteBatch.Draw(gunTexture, gunRect, Color.White);
 
-            _spriteBatch.Draw(medkitTexture, medkitRect, Color.White);
+            //_spriteBatch.Draw(medkitTexture, medkitRect, Color.White);
 
 
             _spriteBatch.End();

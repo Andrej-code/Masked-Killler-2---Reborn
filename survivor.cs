@@ -40,50 +40,69 @@ namespace Masked_Killler_2__Reborn
             keyboardState = Keyboard.GetState();
             _speed = Vector2.Zero;
 
-            if(_location.Y > 0)
+            if (_location.Y > 0)
             {
-                if(keyboardState.IsKeyDown(Keys.W))
+                if (keyboardState.IsKeyDown(Keys.W))
                 {
                     _speed.Y += -1;
 
                     _textureIndex = 0;
-                    
+
                 }
             }
 
-            if(_location.Y > 0)
+            if (_location.Bottom < window.Height)
             {
-                if(keyboardState.IsKeyDown(Keys.S))
+                if (keyboardState.IsKeyDown(Keys.S))
                 {
                     _speed.Y += 1;
-
                     _textureIndex = 2;
                 }
             }
 
             if (_location.X > 0)
             {
-                if(keyboardState.IsKeyDown(Keys.A))
+                if (keyboardState.IsKeyDown(Keys.A))
                 {
                     _speed.X += -1;
-                    
+
                     _textureIndex = 3;
                 }
             }
 
-            if (_location.X > 0)
+            if (_location.Right < window.Width)
             {
-                if(keyboardState.IsKeyDown(Keys.D))
+                if (keyboardState.IsKeyDown(Keys.D))
                 {
                     _speed.X += 1;
 
                     _textureIndex = 1;
-                    
+
                 }
             }
 
             // Speed is known.  Use if statements to determine which direction to face
 
+
+            if (keyboardState.IsKeyDown(Keys.W) && keyboardState.IsKeyDown(Keys.D))
+            {
+                _textureIndex = 0;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.W) && keyboardState.IsKeyDown(Keys.A))
+            {
+                _textureIndex = 0;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.S) && keyboardState.IsKeyDown(Keys.D))
+            {
+                _textureIndex = 2;
+            }
+
+            if (keyboardState.IsKeyDown(Keys.S) && keyboardState.IsKeyDown(Keys.A))
+            {
+                _textureIndex = 2;
+            }
 
             _location.Offset(_speed);
         }
