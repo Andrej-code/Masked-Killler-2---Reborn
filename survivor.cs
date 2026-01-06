@@ -106,8 +106,7 @@ namespace Masked_Killler_2__Reborn
 
             _location.Offset(_speed);
         }
-
-
+  
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_survivorTextures[_textureIndex], _location, Color.White);

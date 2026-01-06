@@ -4,10 +4,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 namespace Masked_Killler_2___Reborn
 {
 
-    enum Screens 
+    enum Screen
     { 
      Intro,
      Game
@@ -34,7 +35,6 @@ namespace Masked_Killler_2___Reborn
 
         Texture2D gasTexture;
         List<Rectangle> gases;
-        Rectangle gasRect;
 
         Texture2D gunTexture;
         Rectangle gunRect;
@@ -46,15 +46,19 @@ namespace Masked_Killler_2___Reborn
 
         Texture2D campTexture;
 
+        Texture2D mK2rTexture;
+
         // Other
 
         Rectangle window;
 
-        KeyboardState KeyboardState;
+        KeyboardState keyboardState;
 
         Random generator;
 
-        
+        Screen screen;
+
+        SpriteFont titlefont;
 
         public Game1()
         {
@@ -79,6 +83,10 @@ namespace Masked_Killler_2___Reborn
 
             _graphics.ApplyChanges();
 
+            screen = new Screen();
+
+            // Assests
+
             survivorTextures = new List<Texture2D>();
 
             survivor = new Survivor(survivorTextures, new Rectangle(200, 200, 30, 40));
@@ -89,15 +97,13 @@ namespace Masked_Killler_2___Reborn
 
             for (int i = 0; i < 5; i++)
             {
-                gases.Add(new Rectangle(generator.Next(0, window.Width - 5), generator.Next(0, window.Height - 5), 20, 30));
+                gases.Add(new Rectangle(generator.Next(0, window.Width - 20), generator.Next(0, window.Height - 30), 20, 30));
             }
-
-            gasRect = new Rectangle(100, 350, 20, 30);
 
             gunRect = new Rectangle(100, 200, 30, 40);
 
-            medkitRect = new Rectangle(100, 250, 30, 40);   
-
+            medkitRect = new Rectangle(100, 250, 30, 40);
+            
             base.Initialize();
         }
 
@@ -110,6 +116,8 @@ namespace Masked_Killler_2___Reborn
             // Background
             campTexture = Content.Load<Texture2D>("Images/camp");
 
+            mK2rTexture = Content.Load<Texture2D>("Images/MK2R");
+
 
             // Player
 
@@ -121,12 +129,16 @@ namespace Masked_Killler_2___Reborn
             // Items
 
             bloxyTexture = Content.Load<Texture2D>("Images/bloxyCola");
-
+            
             gasTexture = Content.Load<Texture2D>("Images/gasCan");
-
+           
             gunTexture = Content.Load<Texture2D>("Images/pistol");
 
             medkitTexture = Content.Load<Texture2D>("Images/medkit");
+
+            // Text
+
+            titlefont = Content.Load<SpriteFont>("Text/titlefont");
         }
         protected override void Update(GameTime gameTime)
         {
@@ -134,7 +146,18 @@ namespace Masked_Killler_2___Reborn
                 Exit();
 
             // TODO: Add your update logic here
-            survivor.Update(window, KeyboardState);
+
+            keyboardState = Keyboard.GetState();
+
+            if (screen == Screen.Intro)
+            {
+                if(keyboardState.IsKeyDown(Keys.Enter))
+                {
+                    screen = Screen.Game;
+                }
+            }
+
+            survivor.Update(window, keyboardState);
 
             base.Update(gameTime);
         }
@@ -148,18 +171,38 @@ namespace Masked_Killler_2___Reborn
 
             // Background
 
-            _spriteBatch.Draw(campTexture, window, Color.White);
+            if(screen == Screen.Intro)
+            {
 
-            survivor.Draw(_spriteBatch);
+                _spriteBatch.Draw(mK2rTexture, window, Color.White);
+                _spriteBatch.DrawString(titlefont,"Press Enter to Start", new Vector2(200,150), Color.Red);
 
-            //_spriteBatch.Draw(bloxyTexture, bloxyRect, Color.White);
+            }
 
-            _spriteBatch.Draw(gasTexture, gasRect, Color.White);
+            else if (screen == Screen.Game)
+            {
+                _spriteBatch.Draw(campTexture, window, Color.White);
 
-            //_spriteBatch.Draw(gunTexture, gunRect, Color.White);
+            // Player
 
-            //_spriteBatch.Draw(medkitTexture, medkitRect, Color.White);
+           
+                survivor.Draw(_spriteBatch);
 
+            // Items
+
+                _spriteBatch.Draw(bloxyTexture, bloxyRect, Color.White);
+
+                foreach (Rectangle gasCan in gases)
+                {
+                    _spriteBatch.Draw(gasTexture, gasCan, Color.White);
+
+                }
+
+                _spriteBatch.Draw(gunTexture, gunRect, Color.White);
+
+                _spriteBatch.Draw(medkitTexture, medkitRect, Color.White);
+
+            }
 
             _spriteBatch.End();
             base.Draw(gameTime);

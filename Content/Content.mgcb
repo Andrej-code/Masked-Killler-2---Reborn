@@ -205,3 +205,13 @@
 /processorParam:TextureFormat=Color
 /build:Images/survivor_4.png
 
+#begin Text/RobloxFontRegular-X30AZ.ttf
+/copy:Text/RobloxFontRegular-X30AZ.ttf
+
+#begin Text/titlefont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Text/titlefont.spritefont
+
