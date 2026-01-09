@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Masked_Killler_2__Reborn
 {
     internal class Survivor
-{
+    {
 
         private List<Texture2D> _survivorTextures;
         /* Index 0 - Up
@@ -106,10 +106,15 @@ namespace Masked_Killler_2__Reborn
 
             _location.Offset(_speed);
         }
-  
+
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_survivorTextures[_textureIndex], _location, Color.White);
         }
-}
+
+        public bool Intersects(Rectangle rect)
+        {
+            return _location.Intersects(rect);
+        }
+    }
 }
