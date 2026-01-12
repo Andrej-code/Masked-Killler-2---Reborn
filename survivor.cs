@@ -24,7 +24,7 @@ namespace Masked_Killler_2__Reborn
         private Vector2 _speed;
         private int changeInSpeed = 1;
         private int _textureIndex;
-
+        private bool _turbo;
 
         public Survivor(List<Texture2D> survivorTextures, Rectangle location)
         {
@@ -117,5 +117,12 @@ namespace Masked_Killler_2__Reborn
         {
             return _location.Intersects(rect);
         }
+        public int Speed
+        {
+            get { return changeInSpeed; }
+            set { changeInSpeed = value; }
+        }
+
+
     }
 }

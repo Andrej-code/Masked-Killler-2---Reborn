@@ -238,7 +238,7 @@ namespace Masked_Killler_2___Reborn
                 }
 
                 // Bloxy Colas
-                secondsCola += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                
                 for (int i = 0; i < bloxys.Count; i++)
                 {
 
@@ -247,10 +247,12 @@ namespace Masked_Killler_2___Reborn
                         bloxys.RemoveAt(i);
                         i--;
 
-                        if (seconds >= 5)
-                        {
-                            speedBoost = true;
-                        }
+                        
+                        speedBoost = true;
+
+                        survivor.Speed = 2;
+                        secondsCola = 0;
+                        
 
                     }
                 }
@@ -258,7 +260,17 @@ namespace Masked_Killler_2___Reborn
                 {
                     screen = Screen.Lose;
                 }
+                if (speedBoost)
+                {
+                    secondsCola += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    this.Window.Title = secondsCola + "";
+                    if (secondsCola > 5)
+                    {
+                        survivor.Speed = 1;
+                        speedBoost = false; 
+                    }
 
+                }
 
             }
 
