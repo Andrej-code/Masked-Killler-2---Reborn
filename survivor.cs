@@ -22,6 +22,7 @@ namespace Masked_Killler_2__Reborn
 
         private Rectangle _location;
         private Vector2 _speed;
+        private int changeInSpeed = 1;
         private int _textureIndex;
 
 
@@ -44,7 +45,7 @@ namespace Masked_Killler_2__Reborn
             {
                 if (keyboardState.IsKeyDown(Keys.W))
                 {
-                    _speed.Y += -1;
+                    _speed.Y += -changeInSpeed;
 
                     _textureIndex = 0;
 
@@ -55,7 +56,7 @@ namespace Masked_Killler_2__Reborn
             {
                 if (keyboardState.IsKeyDown(Keys.S))
                 {
-                    _speed.Y += 1;
+                    _speed.Y += changeInSpeed;
                     _textureIndex = 2;
                 }
             }
@@ -64,7 +65,7 @@ namespace Masked_Killler_2__Reborn
             {
                 if (keyboardState.IsKeyDown(Keys.A))
                 {
-                    _speed.X += -1;
+                    _speed.X += -changeInSpeed;
 
                     _textureIndex = 3;
                 }
@@ -74,7 +75,7 @@ namespace Masked_Killler_2__Reborn
             {
                 if (keyboardState.IsKeyDown(Keys.D))
                 {
-                    _speed.X += 1;
+                    _speed.X += changeInSpeed;
 
                     _textureIndex = 1;
 
