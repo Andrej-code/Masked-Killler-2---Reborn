@@ -123,6 +123,15 @@ namespace Masked_Killler_2__Reborn
             set { changeInSpeed = value; }
         }
 
+        public Vector2 Direction
+        {
+            get { return _speed; }
+        }
 
+
+        public Rectangle Location
+        {
+            get { return _location; }
+        }
     }
 }

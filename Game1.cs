@@ -27,7 +27,11 @@ namespace Masked_Killler_2___Reborn
 
         List<Texture2D> survivorTextures;
 
+        List<Bullet> bullets;
+
         Survivor survivor;
+
+        bool hasGun;
 
 
         // Bot
@@ -59,6 +63,8 @@ namespace Masked_Killler_2___Reborn
         // Bullet
 
         Texture2D bulletTexture;
+
+        Bullet bullet;
 
         // Medkit
 
@@ -113,6 +119,9 @@ namespace Masked_Killler_2___Reborn
 
             // Other
 
+            bullets = new List<Bullet>();
+            hasGun = false;
+
             generator = new Random();
 
             window = new Rectangle(0, 0, 800, 600);
@@ -159,6 +168,8 @@ namespace Masked_Killler_2___Reborn
             {
                 pistol.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
             }
+
+            
 
             gunOutlineRect = new Rectangle(100,555, 66, 68);
 
@@ -263,6 +274,16 @@ namespace Masked_Killler_2___Reborn
                     screen = Screen.Win;
                 }
 
+                // Allows user to shoot bukets
+                if (hasGun)
+                {
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.Direction));
+                    }
+                }
+
+
                 // Bloxy Colas
                 
                 for (int i = 0; i < bloxys.Count; i++)
@@ -316,7 +337,7 @@ namespace Masked_Killler_2___Reborn
                         pistol.RemoveAt(i);
                         i--;
 
-                  
+                        
                     }
                 }
                 
@@ -412,6 +433,8 @@ namespace Masked_Killler_2___Reborn
                 {
                     _spriteBatch.Draw(gunTexture, gun, Color.White);
                 }
+
+                bullet.Draw(_spriteBatch);
 
                 _spriteBatch.Draw(gunOutlineTexture, gunOutlineRect, Color.White);
 

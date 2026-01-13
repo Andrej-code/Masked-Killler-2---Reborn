@@ -12,29 +12,38 @@ namespace Masked_Killler_2__Reborn
     internal class Bullet
 {
 
-        private Texture2D _bullet;
+        private Texture2D _bulletTexture;
         private Rectangle _location;
         private Vector2 _speed;
 
+        private float _seconds;
+        
 
-        public Bullet(Texture2D bullet, Rectangle location)
+        public Bullet (Texture2D bulletTexture, Rectangle location, Vector2 speed)
         {
-            _bullet = bullet;
-
+            _bulletTexture = bulletTexture;
+            _speed = speed;
             _location = location;
-
-            _speed = new Vector2(0, 0);
+            _seconds = 0f;
         }
 
-        public void Update(Rectangle window,  MouseState mouseState)
+
+        public void Update()
         {
-            mouseState = Mouse.GetState();
-            _speed = Vector2.Zero;
-
+            // When the player is not moving where will the bullet go?
+            _location.Offset(_speed);
 
         }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(_bulletTexture,_location, Color.White);
+        }
+        public Rectangle Location
+        {
+            get { return _location; }
+            set { _location = value; }
+        }
 
-
-}
+    }
 }
