@@ -34,25 +34,36 @@ namespace Masked_Killler_2___Reborn
 
         // Items
 
+        // Bloxy Cola
+
         Texture2D bloxyTexture;
         List<Rectangle> bloxys;
 
         Texture2D bloxyOutlineTexture;
         Rectangle bloxyOutlineRect;
 
+        // Gas Can
+
         Texture2D gasTexture;
         List<Rectangle> gases;
         int gasScore;
 
+        // Pistol
 
         Texture2D gunTexture;
-        Rectangle gunRect;
+        List<Rectangle> pistol;
 
         Texture2D gunOutlineTexture;
         Rectangle gunOutlineRect;
 
+        // Bullet
+
+        Texture2D bulletTexture;
+
+        // Medkit
+
         Texture2D medkitTexture;
-        Rectangle medkitRect;
+        List<Rectangle> medkits;
 
         Texture2D medkitOutlineTexture;
         Rectangle medkitOutlineRect;
@@ -73,6 +84,8 @@ namespace Masked_Killler_2___Reborn
 
         KeyboardState keyboardState;
 
+        MouseState mouseState;
+
         Random generator;
 
         Screen screen;
@@ -80,7 +93,6 @@ namespace Masked_Killler_2___Reborn
         SpriteFont titlefont;
 
         bool speedBoost = false;
-
 
         float seconds;
 
@@ -127,7 +139,7 @@ namespace Masked_Killler_2___Reborn
 
             bloxys = new List<Rectangle>();
 
-            for(int i = 0; i < 2; i++)
+            for (int i = 0; i < 2; i++)
             {
                 bloxys.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
             }
@@ -141,11 +153,21 @@ namespace Masked_Killler_2___Reborn
                 gases.Add(new Rectangle(generator.Next(0, window.Width - 20), generator.Next(0, window.Height - 30), 20, 30));
             }
 
-            gunRect = new Rectangle(100, 200, 30, 40);
+            pistol = new List<Rectangle>();
+
+            for (int i = 0; i < 1; i++)
+            {
+                pistol.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
+            }
 
             gunOutlineRect = new Rectangle(100,555, 66, 68);
 
-            medkitRect = new Rectangle(100, 250, 30, 40);
+            medkits = new List<Rectangle>();
+
+           for (int i = 0; i < 2; i++)
+            {
+                medkits.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
+            }
 
             medkitOutlineRect = new Rectangle(160, 555, 55, 58);
             
@@ -185,6 +207,8 @@ namespace Masked_Killler_2___Reborn
            
             gunTexture = Content.Load<Texture2D>("Images/pistol");
 
+            bulletTexture = Content.Load<Texture2D>("Images/bullet");
+
             gunOutlineTexture = Content.Load<Texture2D>("Images/pistolOutline");
 
             medkitTexture = Content.Load<Texture2D>("Images/medkit");
@@ -203,6 +227,8 @@ namespace Masked_Killler_2___Reborn
             // TODO: Add your update logic here
 
             keyboardState = Keyboard.GetState();
+
+            mouseState = Mouse.GetState();
             
 
             if (screen == Screen.Intro)
@@ -256,10 +282,7 @@ namespace Masked_Killler_2___Reborn
 
                     }
                 }
-                if(secondsTimer == 0f)
-                {
-                    screen = Screen.Lose;
-                }
+            
                 if (speedBoost)
                 {
                     secondsCola += (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -270,6 +293,38 @@ namespace Masked_Killler_2___Reborn
                         speedBoost = false; 
                     }
 
+                }
+
+
+                // Medkit
+
+                for (int i = 0; i < medkits.Count; i++)
+                {
+                    if(survivor.Intersects(medkits[i]))
+                    {
+                        medkits.RemoveAt(i);
+                        i--;
+                    }
+                }
+
+
+                // Gun
+                for (int i = 0; i  < pistol.Count; i++)
+                {
+                    if (survivor.Intersects(pistol[i]))
+                    {
+                        pistol.RemoveAt(i);
+                        i--;
+
+                  
+                    }
+                }
+                
+
+
+                if (secondsTimer == 0f)
+                {
+                    screen = Screen.Lose;
                 }
 
             }
@@ -353,12 +408,18 @@ namespace Masked_Killler_2___Reborn
                      
                 }
 
-                _spriteBatch.Draw(gunTexture, gunRect, Color.White);
+                foreach (Rectangle gun in pistol)
+                {
+                    _spriteBatch.Draw(gunTexture, gun, Color.White);
+                }
 
                 _spriteBatch.Draw(gunOutlineTexture, gunOutlineRect, Color.White);
 
-                _spriteBatch.Draw(medkitTexture, medkitRect, Color.White);
-
+                foreach(Rectangle medkit in medkits)
+                {
+                    _spriteBatch.Draw(medkitTexture, medkit, Color.White);
+                }
+   
                 _spriteBatch.Draw(medkitOutlineTexture, medkitOutlineRect, Color.White);
 
             }
