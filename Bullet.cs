@@ -24,14 +24,13 @@ namespace Masked_Killler_2__Reborn
             _bulletTexture = bulletTexture;
             _speed = speed;
             _location = location;
-            _seconds = 0f;
         }
 
 
-        public void Update()
+        public void Update(Rectangle window)
         {
-            // When the player is not moving where will the bullet go?
-            _location.Offset(_speed);
+            
+          _location.Offset(_speed);
 
         }
 

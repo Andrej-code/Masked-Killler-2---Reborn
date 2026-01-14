@@ -277,6 +277,7 @@ namespace Masked_Killler_2___Reborn
                 // Allows user to shoot bukets
                 if (hasGun)
                 {
+                    bullet.Update(window);
                     if (mouseState.LeftButton == ButtonState.Pressed)
                     {
                         bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.Direction));
@@ -308,7 +309,7 @@ namespace Masked_Killler_2___Reborn
                 {
                     secondsCola += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     this.Window.Title = secondsCola + "";
-                    if (secondsCola > 5)
+                    if (secondsCola > 2)
                     {
                         survivor.Speed = 1;
                         speedBoost = false; 
@@ -421,7 +422,7 @@ namespace Masked_Killler_2___Reborn
 
                 }
 
-                //_spriteBatch.Draw(bloxyOutlineTexture, bloxyOutlineRect, Color.White);
+                _spriteBatch.Draw(bloxyOutlineTexture, bloxyOutlineRect, Color.White);
 
                 foreach (Rectangle gasCan in gases)
                 {
@@ -434,7 +435,8 @@ namespace Masked_Killler_2___Reborn
                     _spriteBatch.Draw(gunTexture, gun, Color.White);
                 }
 
-                bullet.Draw(_spriteBatch);
+                foreach (Bullet bullet in  bullets)
+                    bullet.Draw(_spriteBatch);
 
                 _spriteBatch.Draw(gunOutlineTexture, gunOutlineRect, Color.White);
 
