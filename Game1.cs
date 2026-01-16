@@ -1,5 +1,6 @@
 ﻿using Masked_Killler_2__Reborn;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -43,9 +44,6 @@ namespace Masked_Killler_2___Reborn
         Texture2D bloxyTexture;
         List<Rectangle> bloxys;
 
-        Texture2D bloxyOutlineTexture;
-        Rectangle bloxyOutlineRect;
-
         // Gas Can
 
         Texture2D gasTexture;
@@ -57,22 +55,13 @@ namespace Masked_Killler_2___Reborn
         Texture2D gunTexture;
         List<Rectangle> pistol;
 
-        Texture2D gunOutlineTexture;
-        Rectangle gunOutlineRect;
 
         // Bullet
 
         Texture2D bulletTexture;
 
-        Bullet bullet;
+        //Bullet bullet;
 
-        // Medkit
-
-        Texture2D medkitTexture;
-        List<Rectangle> medkits;
-
-        Texture2D medkitOutlineTexture;
-        Rectangle medkitOutlineRect;
 
         // Background
 
@@ -92,11 +81,15 @@ namespace Masked_Killler_2___Reborn
 
         MouseState mouseState;
 
+        MouseState prevMouseState;
+
         Random generator;
 
         Screen screen;
 
         SpriteFont titlefont;
+
+        // Timers
 
         bool speedBoost = false;
 
@@ -105,6 +98,25 @@ namespace Masked_Killler_2___Reborn
         float secondsTimer;
 
         float secondsCola;
+
+        // Audio
+
+        SoundEffect drinking;
+
+        SoundEffectInstance drinkingInstance;
+
+        SoundEffect laughing;
+
+        SoundEffectInstance laughingInstance;
+
+        SoundEffect shot;
+
+        SoundEffectInstance shotInstance;
+
+        SoundEffect victory;
+
+        SoundEffectInstance victoryInstance;
+
 
         public Game1()
         {
@@ -153,8 +165,6 @@ namespace Masked_Killler_2___Reborn
                 bloxys.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
             }
 
-            bloxyOutlineRect = new Rectangle(60, 555, 55, 58);
-
             gases = new List<Rectangle>();
 
             for (int i = 0; i < 5; i++)
@@ -169,19 +179,6 @@ namespace Masked_Killler_2___Reborn
                 pistol.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
             }
 
-            
-
-            gunOutlineRect = new Rectangle(100,555, 66, 68);
-
-            medkits = new List<Rectangle>();
-
-           for (int i = 0; i < 2; i++)
-            {
-                medkits.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
-            }
-
-            medkitOutlineRect = new Rectangle(160, 555, 55, 58);
-            
             base.Initialize();
         }
 
@@ -189,7 +186,7 @@ namespace Masked_Killler_2___Reborn
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            // TODO: Content to load your game content here
 
             // Background
 
@@ -212,23 +209,34 @@ namespace Masked_Killler_2___Reborn
 
             bloxyTexture = Content.Load<Texture2D>("Images/bloxyCola");
 
-            bloxyOutlineTexture = Content.Load<Texture2D>("Images/bloxyColaOutline");
-
             gasTexture = Content.Load<Texture2D>("Images/gasCan");
            
             gunTexture = Content.Load<Texture2D>("Images/pistol");
 
             bulletTexture = Content.Load<Texture2D>("Images/bullet");
 
-            gunOutlineTexture = Content.Load<Texture2D>("Images/pistolOutline");
-
-            medkitTexture = Content.Load<Texture2D>("Images/medkit");
-
-            medkitOutlineTexture = Content.Load<Texture2D>("Images/medkitOutline");
-
             // Text
 
             titlefont = Content.Load<SpriteFont>("Text/titlefont");
+
+            // Audio
+
+            drinking = Content.Load<SoundEffect>("Audio/drinking");
+
+            drinkingInstance = drinking.CreateInstance();
+
+            shot = Content.Load<SoundEffect>("Audio/revolverShot");
+
+            shotInstance = shot.CreateInstance();
+
+            laughing = Content.Load<SoundEffect>("Audio/laughter");
+
+            laughingInstance = laughing.CreateInstance();
+
+            victory = Content.Load<SoundEffect>("Audio/victory");
+
+            victoryInstance = victory.CreateInstance();
+
         }
         protected override void Update(GameTime gameTime)
         {
@@ -240,7 +248,8 @@ namespace Masked_Killler_2___Reborn
             keyboardState = Keyboard.GetState();
 
             mouseState = Mouse.GetState();
-            
+
+            prevMouseState = mouseState;
 
             if (screen == Screen.Intro)
             {
@@ -274,19 +283,43 @@ namespace Masked_Killler_2___Reborn
                     screen = Screen.Win;
                 }
 
-                // Allows user to shoot bukets
-                if (hasGun)
+                // Gun
+                for (int i = 0; i < pistol.Count; i++)
                 {
-                    bullet.Update(window);
-                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    if (survivor.Intersects(pistol[i]))
                     {
-                        bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.Direction));
+                        pistol.RemoveAt(i);
+                        i--;
+
+                        hasGun = true;
+
                     }
                 }
 
+                // Allows user to shoot bullets
+                if (hasGun)
+                {
+                    //bullet.Update(window);
+                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    {
+                        if (survivor.Direction == Vector2.Zero)
+                        {
+                            bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.PrevDirection));
+                        }
+                        else
+                        {
+                            bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.Direction));
+                        }
+                        shotInstance.Play();
+                    }
+                   
+                }
 
-                // Bloxy Colas
-                
+                foreach (Bullet bullet in bullets)
+                    bullet.Update(window);
+
+                // Bloxy Cola
+
                 for (int i = 0; i < bloxys.Count; i++)
                 {
 
@@ -301,7 +334,6 @@ namespace Masked_Killler_2___Reborn
                         survivor.Speed = 2;
                         secondsCola = 0;
                         
-
                     }
                 }
             
@@ -309,39 +341,13 @@ namespace Masked_Killler_2___Reborn
                 {
                     secondsCola += (float)gameTime.ElapsedGameTime.TotalSeconds;
                     this.Window.Title = secondsCola + "";
+                   
                     if (secondsCola > 2)
                     {
                         survivor.Speed = 1;
-                        speedBoost = false; 
-                    }
-
-                }
-
-
-                // Medkit
-
-                for (int i = 0; i < medkits.Count; i++)
-                {
-                    if(survivor.Intersects(medkits[i]))
-                    {
-                        medkits.RemoveAt(i);
-                        i--;
+                        speedBoost = false;
                     }
                 }
-
-
-                // Gun
-                for (int i = 0; i  < pistol.Count; i++)
-                {
-                    if (survivor.Intersects(pistol[i]))
-                    {
-                        pistol.RemoveAt(i);
-                        i--;
-
-                        
-                    }
-                }
-                
 
 
                 if (secondsTimer == 0f)
@@ -354,6 +360,8 @@ namespace Masked_Killler_2___Reborn
 
             else if(screen == Screen.Win)
             {
+                victoryInstance.Play();
+
                 seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (seconds >= 1.2)
                 {
@@ -366,8 +374,11 @@ namespace Masked_Killler_2___Reborn
 
             else if(screen == Screen.Lose)
             {
+
+                laughingInstance.Play();
+
                 seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (seconds >= 1.2)
+                if (seconds >= 1.05)
                 {
                     seconds = 0f;
 
@@ -422,8 +433,6 @@ namespace Masked_Killler_2___Reborn
 
                 }
 
-                _spriteBatch.Draw(bloxyOutlineTexture, bloxyOutlineRect, Color.White);
-
                 foreach (Rectangle gasCan in gases)
                 {
                     _spriteBatch.Draw(gasTexture, gasCan, Color.White);
@@ -435,18 +444,11 @@ namespace Masked_Killler_2___Reborn
                     _spriteBatch.Draw(gunTexture, gun, Color.White);
                 }
 
-                foreach (Bullet bullet in  bullets)
-                    bullet.Draw(_spriteBatch);
-
-                _spriteBatch.Draw(gunOutlineTexture, gunOutlineRect, Color.White);
-
-                foreach(Rectangle medkit in medkits)
+                foreach (Bullet bullet in bullets)
                 {
-                    _spriteBatch.Draw(medkitTexture, medkit, Color.White);
+                    bullet.Draw(_spriteBatch);
                 }
-   
-                _spriteBatch.Draw(medkitOutlineTexture, medkitOutlineRect, Color.White);
-
+              
             }
 
 

@@ -19,23 +19,23 @@
 /processorParam:Quality=Best
 /build:Audio/drinking.wav
 
-#begin Audio/medkitHeal.wav
+#begin Audio/laughter.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
-/build:Audio/medkitHeal.wav
-
-#begin Audio/ouch.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:Audio/ouch.wav
+/build:Audio/laughter.wav
 
 #begin Audio/revolverShot.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/revolverShot.wav
+
+#begin Audio/victory.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/victory.wav
 
 #begin Images/bloxyCola.png
 /importer:TextureImporter

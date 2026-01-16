@@ -24,7 +24,7 @@ namespace Masked_Killler_2__Reborn
         private Vector2 _speed;
         private int changeInSpeed = 1;
         private int _textureIndex;
-        private bool _turbo;
+        private Vector2 _prevDirection;
 
         public Survivor(List<Texture2D> survivorTextures, Rectangle location)
         {
@@ -39,6 +39,9 @@ namespace Masked_Killler_2__Reborn
         public void Update(Rectangle window, KeyboardState keyboardState)
         {
             keyboardState = Keyboard.GetState();
+            if (_speed != Vector2.Zero)
+                _prevDirection = _speed;
+
             _speed = Vector2.Zero;
 
             if (_location.Y > 0)
@@ -132,6 +135,11 @@ namespace Masked_Killler_2__Reborn
         public Rectangle Location
         {
             get { return _location; }
+        }
+
+        public Vector2 PrevDirection
+        {
+            get { return _prevDirection; }
         }
     }
 }

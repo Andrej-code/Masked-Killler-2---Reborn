@@ -16,9 +16,6 @@ namespace Masked_Killler_2__Reborn
         private Rectangle _location;
         private Vector2 _speed;
 
-        private float _seconds;
-        
-
         public Bullet (Texture2D bulletTexture, Rectangle location, Vector2 speed)
         {
             _bulletTexture = bulletTexture;
