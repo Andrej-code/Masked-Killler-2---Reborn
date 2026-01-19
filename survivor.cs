@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Masked_Killler_2__Reborn
 {
-    internal class Survivor
+    public class Survivor
     {
 
         private List<Texture2D> _survivorTextures;

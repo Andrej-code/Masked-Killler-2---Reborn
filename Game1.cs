@@ -37,6 +37,10 @@ namespace Masked_Killler_2___Reborn
 
         // Bot
 
+        List<Texture2D> enitiyTextures;
+
+        Enitiy enitiy;
+
         // Items
 
         // Bloxy Cola
@@ -158,6 +162,11 @@ namespace Masked_Killler_2___Reborn
 
             survivor = new Survivor(survivorTextures, new Rectangle(200, 200, 30, 40));
 
+
+            enitiyTextures = new List<Texture2D>();
+
+            enitiy = new Enitiy(enitiyTextures, new Rectangle(400, 200, 30, 40));
+
             bloxys = new List<Rectangle>();
 
             for (int i = 0; i < 2; i++)
@@ -200,10 +209,19 @@ namespace Masked_Killler_2___Reborn
 
             // Player
 
-            for(int i = 1; i <= 4; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 survivorTextures.Add(Content.Load<Texture2D>("Images/survivor_" + i));
             }
+
+
+            // Bot
+
+            for (int i = 1; i <= 3; i++)
+            {
+                enitiyTextures.Add(Content.Load<Texture2D>("Images/entity_" + i));
+            }
+
 
             // Items
 
@@ -246,10 +264,10 @@ namespace Masked_Killler_2___Reborn
             // TODO: Add your update logic here
 
             keyboardState = Keyboard.GetState();
+            prevMouseState = mouseState;
 
             mouseState = Mouse.GetState();
 
-            prevMouseState = mouseState;
 
             if (screen == Screen.Intro)
             {
@@ -262,6 +280,7 @@ namespace Masked_Killler_2___Reborn
             else if(screen == Screen.Game)
             {
                 survivor.Update(window, keyboardState);
+                enitiy.Update(gameTime, survivor);
                 secondsTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (secondsTimer > 180)
                 {
@@ -425,6 +444,10 @@ namespace Masked_Killler_2___Reborn
             // Player
 
                 survivor.Draw(_spriteBatch);
+
+            // Bot
+
+                enitiy.Draw(_spriteBatch);
 
                 // Items
                 foreach (Rectangle bloxyCola in bloxys)
