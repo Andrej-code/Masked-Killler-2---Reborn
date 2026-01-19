@@ -16,6 +16,7 @@ namespace Masked_Killler_2__Reborn
         private Vector2 _speed;
         private Rectangle _location;
         private int _textureIndex;
+        private bool _isPaused;
 
     public Enitiy(List<Texture2D> textures, Rectangle loaction)
     {
@@ -24,43 +25,50 @@ namespace Masked_Killler_2__Reborn
             _speed = Vector2.Zero;
             _location = loaction;
             _textureIndex = 0;
+            _isPaused = false;
     }
 
         public void Update( GameTime gameTime, Survivor survivor)
         {
-            _speed = Vector2.Zero;
-
-
-            if (survivor.Speed < _location.X)
+            if (!_isPaused)
             {
-                _speed.X = -3;
-                _textureIndex = 1;
-            }
+                _speed = Vector2.Zero;
 
-            if (survivor.Speed > _location.X)
-            {
-                _speed.X = 3;
-                _textureIndex = 2;
-            }
 
-            if (survivor.Speed < _location.Y)
-            {
-                _speed.Y = 3;
-                _textureIndex = 3;
-            }
+                if (_location.X < survivor.Location.X)
+                {
+                    _speed.X = 1;
+                    _textureIndex = 1;
+                }
 
-            if (survivor.Speed > _location.Y)
-            {
-                _speed.Y = -3;
-                _textureIndex = 0;
-            }
+                if (_location.X > survivor.Location.X)
+                {
+                    _speed.X = -1f;
+                    _textureIndex = 2;
+                }
 
-            _location.Offset(_speed);
+                if (_location.Y < survivor.Location.Y)
+                {
+                    _speed.Y = 1f;
+                    _textureIndex = 3;
+                }
+
+                if (_location.Y > survivor.Location.Y)
+                {
+                    _speed.Y = -1;
+                    _textureIndex = 0;
+                }
+
+
+                _location.Offset(_speed);
+            }
         }
 
-        public bool Contains (Point survivor)
+       
+        public Vector2 Direction
         {
-            return (_location.Contains(survivor));
+            get { return _speed; }
+        
         }
 
         public bool Intersects (Rectangle survivor)
@@ -71,6 +79,11 @@ namespace Masked_Killler_2__Reborn
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(_textures[_textureIndex],_location, Color.White);
+        }
+        public bool IsPaused
+        {
+            get { return _isPaused; }
+            set { _isPaused = value; }
         }
 
     }

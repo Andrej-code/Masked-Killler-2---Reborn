@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Linq;
 namespace Masked_Killler_2___Reborn
 {
 
@@ -27,18 +28,12 @@ namespace Masked_Killler_2___Reborn
         // Player
 
         List<Texture2D> survivorTextures;
-
-        List<Bullet> bullets;
-
         Survivor survivor;
-
-        bool hasGun;
 
 
         // Bot
 
         List<Texture2D> enitiyTextures;
-
         Enitiy enitiy;
 
         // Items
@@ -58,14 +53,13 @@ namespace Masked_Killler_2___Reborn
 
         Texture2D gunTexture;
         List<Rectangle> pistol;
-
+        bool hasGun;
 
         // Bullet
 
         Texture2D bulletTexture;
-
-        //Bullet bullet;
-
+        List<Bullet> bullets;
+        bool isShot;
 
         // Background
 
@@ -102,6 +96,8 @@ namespace Masked_Killler_2___Reborn
         float secondsTimer;
 
         float secondsCola;
+
+        float secondsShot;
 
         // Audio
 
@@ -165,7 +161,7 @@ namespace Masked_Killler_2___Reborn
 
             enitiyTextures = new List<Texture2D>();
 
-            enitiy = new Enitiy(enitiyTextures, new Rectangle(400, 200, 30, 40));
+            enitiy = new Enitiy(enitiyTextures, new Rectangle(650, 200, 30, 40));
 
             bloxys = new List<Rectangle>();
 
@@ -216,6 +212,8 @@ namespace Masked_Killler_2___Reborn
 
 
             // Bot
+
+            enitiyTextures.Add(Content.Load<Texture2D>("Images/entity"));
 
             for (int i = 1; i <= 3; i++)
             {
@@ -279,8 +277,9 @@ namespace Masked_Killler_2___Reborn
 
             else if(screen == Screen.Game)
             {
-                survivor.Update(window, keyboardState);
                 enitiy.Update(gameTime, survivor);
+                survivor.Update(window, keyboardState);
+               
                 secondsTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (secondsTimer > 180)
                 {
@@ -318,7 +317,6 @@ namespace Masked_Killler_2___Reborn
                 // Allows user to shoot bullets
                 if (hasGun)
                 {
-                    //bullet.Update(window);
                     if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
                     {
                         if (survivor.Direction == Vector2.Zero)
@@ -334,9 +332,17 @@ namespace Masked_Killler_2___Reborn
                    
                 }
 
-                foreach (Bullet bullet in bullets)
-                    bullet.Update(window);
+                for (int i = 0; i < bullets.Count; i++)
+                {
 
+                    bullets[i].Update(window);
+                    if (enitiy.Intersects(bullets[i].Location))
+                    {
+                        enitiy.IsPaused = true;
+                        bullets.RemoveAt(i);
+                    }
+
+                }
                 // Bloxy Cola
 
                 for (int i = 0; i < bloxys.Count; i++)
@@ -369,7 +375,17 @@ namespace Masked_Killler_2___Reborn
                 }
 
 
-                if (secondsTimer == 0f)
+                // Bot
+
+                if (enitiy.Intersects(survivor.Location))
+                {
+                    screen = Screen.Lose;
+                }
+
+
+                
+                 
+                else if (secondsTimer == 0f)
                 {
                     screen = Screen.Lose;
                 }
