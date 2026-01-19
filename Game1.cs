@@ -300,7 +300,7 @@ namespace Masked_Killler_2___Reborn
                 if (hasGun)
                 {
                     //bullet.Update(window);
-                    if (mouseState.LeftButton == ButtonState.Pressed)
+                    if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
                     {
                         if (survivor.Direction == Vector2.Zero)
                         {
