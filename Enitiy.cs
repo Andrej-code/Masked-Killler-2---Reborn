@@ -34,28 +34,28 @@ namespace Masked_Killler_2__Reborn
             {
                 _speed = Vector2.Zero;
 
-
+                // Right
                 if (_location.X < survivor.Location.X)
                 {
-                    _speed.X = 1;
+                    _speed.X = 1f;
                     _textureIndex = 1;
                 }
-
+                // Left
                 if (_location.X > survivor.Location.X)
                 {
                     _speed.X = -1f;
                     _textureIndex = 2;
                 }
-
+                // Down
                 if (_location.Y < survivor.Location.Y)
                 {
                     _speed.Y = 1f;
                     _textureIndex = 3;
                 }
-
+                // Up
                 if (_location.Y > survivor.Location.Y)
                 {
-                    _speed.Y = -1;
+                    _speed.Y = -1f;
                     _textureIndex = 0;
                 }
 

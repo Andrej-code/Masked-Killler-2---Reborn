@@ -181,7 +181,7 @@ namespace Masked_Killler_2___Reborn
 
             for (int i = 0; i < 1; i++)
             {
-                pistol.Add(new Rectangle(generator.Next(0, window.Width - 30), generator.Next(0, window.Height - 40), 30, 40));
+                pistol.Add(new Rectangle(100, 100, 30, 40));
             }
 
             base.Initialize();
@@ -281,7 +281,7 @@ namespace Masked_Killler_2___Reborn
                 survivor.Update(window, keyboardState);
                
                 secondsTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                if (secondsTimer > 180)
+                if (secondsTimer > 120)
                 {
                     screen = Screen.Lose;
                 }
@@ -319,6 +319,7 @@ namespace Masked_Killler_2___Reborn
                 {
                     if (mouseState.LeftButton == ButtonState.Pressed && prevMouseState.LeftButton == ButtonState.Released)
                     {
+                        shotInstance.Play();
                         if (survivor.Direction == Vector2.Zero)
                         {
                             bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.PrevDirection));
@@ -327,21 +328,26 @@ namespace Masked_Killler_2___Reborn
                         {
                             bullets.Add(new Bullet(bulletTexture, survivor.Location, survivor.Direction));
                         }
-                        shotInstance.Play();
+                       
                     }
                    
                 }
 
                 for (int i = 0; i < bullets.Count; i++)
                 {
-
                     bullets[i].Update(window);
                     if (enitiy.Intersects(bullets[i].Location))
                     {
                         enitiy.IsPaused = true;
                         bullets.RemoveAt(i);
+                        secondsShot = 0;
                     }
 
+                }
+                secondsShot += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                if (secondsShot > 3)
+                {
+                    enitiy.IsPaused = false;
                 }
                 // Bloxy Cola
 
@@ -358,15 +364,14 @@ namespace Masked_Killler_2___Reborn
 
                         survivor.Speed = 2;
                         secondsCola = 0;
-                        
+                        drinkingInstance.Play();
                     }
                 }
             
                 if (speedBoost)
                 {
                     secondsCola += (float)gameTime.ElapsedGameTime.TotalSeconds;
-                    this.Window.Title = secondsCola + "";
-                   
+
                     if (secondsCola > 2)
                     {
                         survivor.Speed = 1;
@@ -448,7 +453,7 @@ namespace Masked_Killler_2___Reborn
 
             // Timer
 
-                _spriteBatch.DrawString(titlefont, (180 - secondsTimer).ToString("Timer - 0:00"), new Vector2(500, 5), Color.Red);
+                _spriteBatch.DrawString(titlefont, (120 - secondsTimer).ToString("Timer - 0:00"), new Vector2(500, 5), Color.Red);
 
             
             // Score
