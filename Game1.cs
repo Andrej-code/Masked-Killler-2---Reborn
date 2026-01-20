@@ -113,9 +113,16 @@ namespace Masked_Killler_2___Reborn
 
         SoundEffectInstance shotInstance;
 
+
+        SoundEffect pickingUp;
+
+        SoundEffectInstance pickingUpInstance;
+
         SoundEffect victory;
 
         SoundEffectInstance victoryInstance;
+
+            
 
 
         public Game1()
@@ -245,6 +252,10 @@ namespace Masked_Killler_2___Reborn
 
             shotInstance = shot.CreateInstance();
 
+            pickingUp = Content.Load<SoundEffect>("Audio/pickedUp");
+
+            pickingUpInstance = pickingUp.CreateInstance();
+
             laughing = Content.Load<SoundEffect>("Audio/laughter");
 
             laughingInstance = laughing.CreateInstance();
@@ -294,6 +305,8 @@ namespace Masked_Killler_2___Reborn
                         i--;
 
                         gasScore += 1;
+
+                        pickingUpInstance.Play();
                     }
                 }
                 if (gasScore == 5 )

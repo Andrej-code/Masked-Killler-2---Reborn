@@ -25,6 +25,12 @@
 /processorParam:Quality=Best
 /build:Audio/laughter.wav
 
+#begin Audio/pickedUp.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/pickedUp.wav
+
 #begin Audio/revolverShot.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
