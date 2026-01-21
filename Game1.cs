@@ -405,9 +405,10 @@ namespace Masked_Killler_2___Reborn
                         
                         speedBoost = true;
 
+                        drinkingInstance.Play();
                         survivor.Speed = 2;
                         secondsCola = 0;
-                        drinkingInstance.Play();
+                       
                     }
                 }
             
