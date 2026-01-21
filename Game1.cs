@@ -59,7 +59,6 @@ namespace Masked_Killler_2___Reborn
 
         Texture2D bulletTexture;
         List<Bullet> bullets;
-        bool isShot;
 
         // Background
 
@@ -122,7 +121,11 @@ namespace Masked_Killler_2___Reborn
 
         SoundEffectInstance victoryInstance;
 
-            
+        SoundEffect chased;
+        SoundEffectInstance chasedInstance;
+
+        SoundEffect chill;
+        SoundEffectInstance chillInstance;
 
 
         public Game1()
@@ -264,6 +267,15 @@ namespace Masked_Killler_2___Reborn
 
             victoryInstance = victory.CreateInstance();
 
+            chased = Content.Load<SoundEffect>("Audio/chased");
+
+            chasedInstance = chased.CreateInstance();
+
+            chill = Content.Load<SoundEffect>("Audio/wares");
+
+            chillInstance = chill.CreateInstance();
+
+
         }
         protected override void Update(GameTime gameTime)
         {
@@ -283,6 +295,22 @@ namespace Masked_Killler_2___Reborn
                 if(keyboardState.IsKeyDown(Keys.Enter))
                 {
                     screen = Screen.Game;
+
+                }
+
+                chillInstance.Play();
+
+                if(keyboardState.IsKeyDown(Keys.Space))
+                {
+                    screen = Screen.Tips;
+                }
+            }
+
+            if (screen == Screen.Tips)
+            {
+                if (keyboardState.IsKeyDown(Keys.B))
+                {
+                    screen = Screen.Intro;
                 }
             }
 
@@ -290,11 +318,13 @@ namespace Masked_Killler_2___Reborn
             {
                 enitiy.Update(gameTime, survivor);
                 survivor.Update(window, keyboardState);
-               
+
+                chasedInstance.Play();
+
                 secondsTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (secondsTimer > 120)
                 {
-                    screen = Screen.Lose;
+                    screen = Screen.Win;
                 }
                 // Gas Cans
                 for (int i = 0; i < gases.Count; i++)
@@ -415,6 +445,9 @@ namespace Masked_Killler_2___Reborn
             {
                 victoryInstance.Play();
 
+                chasedInstance.Stop();
+                chillInstance.Stop();
+
                 seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (seconds >= 1.2)
                 {
@@ -429,6 +462,9 @@ namespace Masked_Killler_2___Reborn
             {
 
                 laughingInstance.Play();
+
+                chasedInstance.Stop();
+                chillInstance.Stop();
 
                 seconds += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if (seconds >= 1.05)
@@ -455,8 +491,19 @@ namespace Masked_Killler_2___Reborn
             {
 
                 _spriteBatch.Draw(mK2rTexture, window, Color.White);
-                _spriteBatch.DrawString(titlefont,"Press Enter to Start", new Vector2(155,164), Color.Red);
+                _spriteBatch.DrawString(titlefont,"Press Enter to Start", new Vector2(155, 89), Color.Red);
+                _spriteBatch.DrawString(titlefont, "Press Space to How to Play", new Vector2(96, 190), Color.Red);
+            }
 
+            if (screen == Screen.Tips)
+            {
+                _spriteBatch.Draw(mK2rTexture, window, Color.White);
+
+                _spriteBatch.DrawString(titlefont, "Controls", new Vector2(325, 26), Color.Red);
+                _spriteBatch.DrawString(titlefont, "WSAD - To move around", new Vector2(155, 89), Color.Red);
+                _spriteBatch.DrawString(titlefont, "Left Mouse - Use items", new Vector2(155, 190), Color.Red);
+
+                _spriteBatch.DrawString(titlefont, "Go Back?", new Vector2(0, 558), Color.Red);
             }
 
             else if (screen == Screen.Game)

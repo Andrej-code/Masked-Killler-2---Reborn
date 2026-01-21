@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Audio/chased.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/chased.wav
+
 #begin Audio/drinking.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -42,6 +48,12 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:Audio/victory.wav
+
+#begin Audio/wares.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/wares.wav
 
 #begin Images/bloxyCola.png
 /importer:TextureImporter
